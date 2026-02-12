@@ -19,6 +19,12 @@ class AppointmentController extends Controller
             ], 422);
         }
 
+        if (\App\Models\ClosedDay::where('date', $request->date)->exists()) {
+            return response()->json([
+                'message' => 'Deze dag is gesloten.'
+            ], 422);
+        }
+
         $time = date('H:00', strtotime($request->time));
 
         $exists = Appointment::where('date', $request->date)
